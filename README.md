@@ -3,6 +3,7 @@ This project using Arduino, Processing, Spacebrew to implement a remote controll
 
 ### How to use
 1. run admin/index.html
-2. run processing/robot.pde in Processing
-3. run controller/index.html
-4. link the event sender and subscriber in admin page
+2. install spacebrew library in Processing
+3. run processing/robot.pde in Processing
+4. run controller/index.html
+5. link the event sender and subscriber in admin page
