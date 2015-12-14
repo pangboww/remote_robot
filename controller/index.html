@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+    <title>Robot Controller</title>
+
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+    <script type="text/javascript" src="js/jq.js"></script>
+		<script type="text/javascript" src="js/sb-1.4.1.js"></script>
+    <script type="text/javascript">
+
+		$(window).on("load", setup);
+
+		// Spacebrew Object
+		var sb;
+		var server = "52.19.162.255";
+		var name = "Robot Controller";
+		var description = "The is the controller of robot"
+
+		/**
+	     * setup Configure spacebrew connection and adds the mousedown listener.
+	     */
+		function setup (){
+
+			// create spacebrew client object
+			sb = new Spacebrew.Client(server, name, description, {reconnect:true});
+
+			// configure the publication and subscription feeds
+			sb.addPublish("up", "boolean", "false");
+  		sb.addPublish("down", "boolean", "false");
+  		sb.addPublish("left", "boolean", "false");
+  		sb.addPublish("right", "boolean", "false");
+
+			// override Spacebrew events - this is how you catch events coming from Spacebrew
+			//sb.onOpen = onOpen;
+
+			// connect to spacbrew
+			sb.connect();
+
+			// listen to the mouse
+			$("#up").on("mousedown", onUpButtonPress);
+			$("#up").on("mouseup", onUpButtonRelease);
+			$("#down").on("mousedown", onDownButtonPress);
+			$("#down").on("mouseup", onDownButtonRelease);
+			$("#left").on("mousedown", onLeftButtonPress);
+			$("#left").on("mouseup", onLeftButtonRelease);
+			$("#right").on("mousedown", onRightButtonPress);
+			$("#right").on("mouseup", onRightButtonRelease);
+		}
+
+		/**
+		 * Function that is called when Spacebrew connection is established
+		 */
+		function onOpen() {
+			var message = "Connected as <strong>" + sb.name() + "</strong>. ";
+			if (sb.name() === app_name) {
+				message += "<br>You can customize this app's name in the query string by adding <strong>name=your_app_name</strong>."
+			}
+			$("#name").html( message );
+		}
+
+		/**
+	     * Function that is called whenever the button is pressed.
+	     * @param  {Event object} evt Holds information about the button press event
+	     */
+		function onUpButtonPress (evt){
+	    sb.send("up", "boolean", "true");
+		}
+
+		function onDownButtonPress (evt){
+			sb.send("down", "boolean", "true");
+		}
+
+		function onLeftButtonPress (evt){
+			sb.send("left", "boolean", "true");
+		}
+
+		function onRightButtonPress (evt){
+			sb.send("right", "boolean", "true");
+		}
+
+		function onUpButtonRelease (evt){
+	        sb.send("up", "boolean", "false");
+		}
+
+		function onDownButtonRelease (evt){
+					sb.send("down", "boolean", "false");
+		}
+
+		function onLeftButtonRelease (evt){
+	        sb.send("left", "boolean", "false");
+		}
+
+		function onRightButtonRelease (evt){
+	        sb.send("right", "boolean", "false");
+		}
+		/**
+	     * Function that is called whenever the button is released.
+	     * @param  {Event object} evt Holds information about the button press event
+	     */
+
+
+		document.addEventListener('keydown', function(event) {
+			if (event.keyCode == 37) {
+			  sb.send("left", "boolean", "true");
+			} else if (event.keyCode == 38) {
+				sb.send("up", "boolean", "true");
+			} else if (event.keyCode == 39) {
+				sb.send("right", "boolean", "true");
+			} else if (event.keyCode == 40) {
+				sb.send("down", "boolean", "true");
+			}
+		});
+
+		document.addEventListener('keyup', function(event) {
+			if (event.keyCode == 37) {
+			  sb.send("left", "boolean", "false");
+			} else if (event.keyCode == 38) {
+				sb.send("up", "boolean", "false");
+			} else if (event.keyCode == 39) {
+				sb.send("right", "boolean", "false");
+			} else if (event.keyCode == 40) {
+				sb.send("down", "boolean", "false");
+			}
+		});
+
+
+	</script>
+	</head>
+
+	<body>
+		<h1>Click buttons or keyboard to send command to robot</h1>
+		<h3 id="numclicks"></h3>
+		<a class="button" id="up">Up</a>
+		<a class="button" id="down">Down</a>
+		<a class="button" id="left">Left</a>
+		<a class="button" id="right">Right</a>
+	</body>
+
+</html>
