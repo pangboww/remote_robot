@@ -6,10 +6,13 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
-
     <script type="text/javascript" src="js/jq.js"></script>
 		<script type="text/javascript" src="js/sb-1.4.1.js"></script>
-    <script type="text/javascript">
+		<script type="text/javascript" src="js/bootstrap-slider.js"></script>
+		<link rel="stylesheet" href="css/slider.css" type="text/css" media="screen" charset="utf-8" />
+
+
+		<script type="text/javascript">
 
 		$(window).on("load", setup);
 
@@ -18,7 +21,7 @@
 		var server = "52.19.162.255";
 		var name = "Robot Controller";
 		var description = "The is the controller of robot"
-
+		var r;
 		/**
 	     * setup Configure spacebrew connection and adds the mousedown listener.
 	     */
@@ -32,6 +35,7 @@
   		sb.addPublish("down", "boolean", "false");
   		sb.addPublish("left", "boolean", "false");
   		sb.addPublish("right", "boolean", "false");
+			sb.addPublish("head", "range", "0");
 
 			// override Spacebrew events - this is how you catch events coming from Spacebrew
 			//sb.onOpen = onOpen;
@@ -48,6 +52,11 @@
 			$("#left").on("mouseup", onLeftButtonRelease);
 			$("#right").on("mousedown", onRightButtonPress);
 			$("#right").on("mouseup", onRightButtonRelease);
+
+			r = $('#headSlider').slider()
+										.on('slide', onSliderChanged)
+										.data('slider');
+
 		}
 
 		/**
@@ -82,19 +91,24 @@
 		}
 
 		function onUpButtonRelease (evt){
-	        sb.send("up", "boolean", "false");
+	    sb.send("up", "boolean", "false");
 		}
 
 		function onDownButtonRelease (evt){
-					sb.send("down", "boolean", "false");
+			sb.send("down", "boolean", "false");
 		}
 
 		function onLeftButtonRelease (evt){
-	        sb.send("left", "boolean", "false");
+	    sb.send("left", "boolean", "false");
 		}
 
 		function onRightButtonRelease (evt){
-	        sb.send("right", "boolean", "false");
+	    sb.send("right", "boolean", "false");
+		}
+
+		function onSliderChanged (evt){
+			sb.send("head", "range", r.getValue().toString());
+			console.log(r.getValue());
 		}
 		/**
 	     * Function that is called whenever the button is released.
@@ -127,16 +141,22 @@
 		});
 
 
+
+
 	</script>
 	</head>
 
 	<body>
-		<h1>Click buttons or keyboard to send command to robot</h1>
+		<h1>Click buttons to send command to robot</h1>
 		<h3 id="numclicks"></h3>
 		<a class="button" id="up">Up</a>
 		<a class="button" id="down">Down</a>
 		<a class="button" id="left">Left</a>
 		<a class="button" id="right">Right</a>
+		<p>You can also type up, down, left, right on keyboard to send the same command</p>
+		<h1>Drag the slider to set robot head position</h1>
+		<!-- <input type="range" class="slider" name="slider" id="head" value="0" min="-90" max="90"  /> -->
+		-90 &deg; &nbsp;&nbsp;<input id="headSlider" data-slider-id='headSlider' type="text" data-slider-min="-90" data-slider-max="90" data-slider-step="1" data-slider-value="0"/>&nbsp;&nbsp;&nbsp;90 &deg;
 	</body>
 
 </html>
