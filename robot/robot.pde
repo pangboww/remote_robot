@@ -30,8 +30,6 @@ void setup() {
   sb.addSubscribe("laser", "boolean");
   sb.addSubscribe("gun_left", "boolean");
   sb.addSubscribe("gun_right", "boolean");
-  sb.addSubscribe("head", "range");
-  sb.addPublish( "distance", "range", "0");
   sb.connect(server, name, description );
 
   String portName = Serial.list()[1]; //change the 0 to a 1 or 2 etc. to match your port
@@ -67,7 +65,7 @@ void onBooleanMessage( String name, boolean value ) {
   }
   
   if(name.equals("up")) {
-    arduinoPort.write('1');
+    arduinoPort.write(CMD_FORWARD);
   } else if(name.equals("down")) {
     arduinoPort.write(CMD_BACKWARD);
   } else if(name.equals("left")) {
