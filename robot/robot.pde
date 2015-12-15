@@ -22,6 +22,7 @@ void setup() {
   sb.addSubscribe("left", "boolean");
   sb.addSubscribe("right", "boolean");
   sb.addSubscribe("head", "range");
+  sb.addPublish( "distance", "range", "0");
   sb.connect(server, name, description );
 
   String portName = Serial.list()[1]; //change the 0 to a 1 or 2 etc. to match your port
@@ -30,7 +31,13 @@ void setup() {
 }
 
 void draw() {
-  // do whatever you want to do here  
+  //Here just a test for sb.send(); It works!
+   float distance;
+   while(true){
+     distance = random(100);
+     sb.send("distance", str(distance));
+   }
+   
 }
 
 
