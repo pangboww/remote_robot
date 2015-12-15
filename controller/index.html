@@ -18,7 +18,7 @@
 
 		// Spacebrew Object
 		var sb;
-		var server = "52.19.162.255";
+		var server = "sandbox.spacebrew.cc";
 		var name = "Robot Controller";
 		var description = "The is the controller of robot"
 		var sld;
@@ -32,9 +32,12 @@
 
 			// configure the publication and subscription feeds
 			sb.addPublish("up", "boolean", "false");
-  		sb.addPublish("down", "boolean", "false");
-  		sb.addPublish("left", "boolean", "false");
-  		sb.addPublish("right", "boolean", "false");
+  			sb.addPublish("down", "boolean", "false");
+  			sb.addPublish("left", "boolean", "false");
+  			sb.addPublish("right", "boolean", "false");
+  			sb.addPublish("laser", "boolean", "false");
+  			sb.addPublish("gun_left", "boolean", "false");
+  			sb.addPublish("gun_right", "boolean", "false");
 			sb.addPublish("head", "range", "0");
 			sb.addSubscribe("distance", "range");
 
@@ -53,6 +56,15 @@
 			$("#left").on("mouseup", onLeftButtonRelease);
 			$("#right").on("mousedown", onRightButtonPress);
 			$("#right").on("mouseup", onRightButtonRelease);
+
+			$("#laser").on("mousedown", onLaserButtonPress);
+			$("#laser").on("mouseup",	onLaserButtonRelease);
+
+			$("#gun_left").on("mousedown", onGunLeftButtonPress);
+			$("#gun_left").on("mouseup", onGunLeftButtonRelease);
+
+			$("#gun_right").on("mousedown",	onGunRightButtonPress);
+			$("#gun_right").on("mouseup",	onGunRightButtonRelease);
 
 			sld = $('#headSlider').slider()
 										.on('change', onSliderChanged)
@@ -91,6 +103,21 @@
 			sb.send("right", "boolean", "true");
 		}
 
+		function onLaserButtonPress (evt){
+			sb.send("laser", "boolean", "true");
+		}
+
+		function onGunLeftButtonPress (evt){
+			sb.send("gun_left", "boolean", "true");
+		}
+
+		function onGunRightButtonPress (evt){
+			sb.send("gun_right", "boolean", "true");
+		}
+
+
+
+
 		function onUpButtonRelease (evt){
 	    sb.send("up", "boolean", "false");
 		}
@@ -107,8 +134,20 @@
 	    sb.send("right", "boolean", "false");
 		}
 
+		function onLaserButtonRelease (evt){
+			sb.send("laser", "boolean", "false");
+		}
+
 		function onSliderChanged (evt){
 			sb.send("head", "range", sld.getValue().toString());
+		}
+
+		function onGunLeftButtonRelease (evt){
+			sb.send("gun_left", "boolean", "false");
+		}
+
+		function onGunRightButtonRelease (evt){
+			sb.send("gun_right", "boolean", "false");
 		}
 
 		function onRangeMessage(name, value){
@@ -129,12 +168,16 @@
 				sb.send("right", "boolean", "true");
 			} else if (event.keyCode == 40) {
 				sb.send("down", "boolean", "true");
-			} else if (event.keyCode == 90) {
-				var v = sld.getValue()-3;
-				sld.setValue(v, true, true);
-			} else if (event.keyCode == 88) {
-				var v = sld.getValue()+3;
-				sld.setValue(v, true, true);
+			} else if (event.keyCode == 32) {			// space
+				sb.send("laser", "boolean", "true");
+			} else if (event.keyCode == 88) {			// z
+				sb.send("gun_left", "boolean", "true");
+				//var v = sld.getValue()-3;
+				//sld.setValue(v, true, true);
+			} else if (event.keyCode == 90) {			//x
+				sb.send("gun_right", "boolean", "true");
+				//var v = sld.getValue()+3;
+				//sld.setValue(v, true, true);
 			}
 		});
 
@@ -147,6 +190,8 @@
 				sb.send("right", "boolean", "false");
 			} else if (event.keyCode == 40) {
 				sb.send("down", "boolean", "false");
+			} else if (event.keyCode == 32) {
+				sb.send("laser", "boolean", "false");
 			}
 		});
 
@@ -165,16 +210,23 @@
 		<a class="button" id="right">Right</a>
 		<p>You can also type up, down, left, right on keyboard to send the same command</p>
 		<br>
+		<a class="button" id="laser">FIRE</a>
+		<p>You can also use Space to fice</p>
 		<br>
-		<h1>Drag the slider to set robot head direction</h1>
+		<!--<h1>Drag the slider to set robot head direction</h1>
 		-90 &deg; &nbsp;&nbsp;
 		<input id="headSlider" data-slider-id='headSlider' type="text" data-slider-min="-90" data-slider-max="90" data-slider-step="1" data-slider-value="0"/>
-		&nbsp;&nbsp;&nbsp;90 &deg;
-		<p>You can also type Z and X on keyboard to set robot head direction</p>
+		&nbsp;&nbsp;&nbsp;90 &deg;-->
+		<br/>
+		<br/>
+
+		<a class="button" id="gun_left">Turn Gun Left</a>
+		<a class="button" id="gun_right">Turn Gun Right</a>
+		<p>You can also use Z and X on keyboard to turn robot gun</p>
 		<br>
 		<br>
 
-		<p id='distance'>No robot connection</p>
+		<!--<p id='distance'>No robot connection</p>-->
 
 	</body>
 
