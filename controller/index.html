@@ -21,7 +21,7 @@
 		var server = "52.19.162.255";
 		var name = "Robot Controller";
 		var description = "The is the controller of robot"
-		var r;
+		var sld;
 		/**
 	     * setup Configure spacebrew connection and adds the mousedown listener.
 	     */
@@ -54,8 +54,8 @@
 			$("#right").on("mousedown", onRightButtonPress);
 			$("#right").on("mouseup", onRightButtonRelease);
 
-			r = $('#headSlider').slider()
-										.on('slide', onSliderChanged)
+			sld = $('#headSlider').slider()
+										.on('change', onSliderChanged)
 										.data('slider');
 
 		}
@@ -108,7 +108,7 @@
 		}
 
 		function onSliderChanged (evt){
-			sb.send("head", "range", r.getValue().toString());
+			sb.send("head", "range", sld.getValue().toString());
 		}
 
 		function onRangeMessage(name, value){
@@ -129,6 +129,12 @@
 				sb.send("right", "boolean", "true");
 			} else if (event.keyCode == 40) {
 				sb.send("down", "boolean", "true");
+			} else if (event.keyCode == 90) {
+				var v = sld.getValue()-3;
+				sld.setValue(v, true, true);
+			} else if (event.keyCode == 88) {
+				var v = sld.getValue()+3;
+				sld.setValue(v, true, true);
 			}
 		});
 
@@ -160,10 +166,11 @@
 		<p>You can also type up, down, left, right on keyboard to send the same command</p>
 		<br>
 		<br>
-		<h1>Drag the slider to set robot head position</h1>
+		<h1>Drag the slider to set robot head direction</h1>
 		-90 &deg; &nbsp;&nbsp;
 		<input id="headSlider" data-slider-id='headSlider' type="text" data-slider-min="-90" data-slider-max="90" data-slider-step="1" data-slider-value="0"/>
 		&nbsp;&nbsp;&nbsp;90 &deg;
+		<p>You can also type Z and X on keyboard to set robot head direction</p>
 		<br>
 		<br>
 
