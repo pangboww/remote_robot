@@ -7,7 +7,7 @@ final int CMD_LEFT     = '3';
 final int CMD_RIGHT    = '4';
 final int CMD_STOP     = '5';
 
-String server="sandbox.spacebrew.cc";
+String server="52.19.162.255";
 String name="Processing";
 String description ="This is the Processing side who will listen the web side commond";
 
@@ -21,6 +21,7 @@ void setup() {
   sb.addSubscribe("down", "boolean");
   sb.addSubscribe("left", "boolean");
   sb.addSubscribe("right", "boolean");
+  sb.addSubscribe("head", "range");
   sb.connect(server, name, description );
 
   String portName = Serial.list()[1]; //change the 0 to a 1 or 2 etc. to match your port

@@ -108,7 +108,6 @@
 
 		function onSliderChanged (evt){
 			sb.send("head", "range", r.getValue().toString());
-			console.log(r.getValue());
 		}
 		/**
 	     * Function that is called whenever the button is released.
@@ -155,8 +154,9 @@
 		<a class="button" id="right">Right</a>
 		<p>You can also type up, down, left, right on keyboard to send the same command</p>
 		<h1>Drag the slider to set robot head position</h1>
-		<!-- <input type="range" class="slider" name="slider" id="head" value="0" min="-90" max="90"  /> -->
-		-90 &deg; &nbsp;&nbsp;<input id="headSlider" data-slider-id='headSlider' type="text" data-slider-min="-90" data-slider-max="90" data-slider-step="1" data-slider-value="0"/>&nbsp;&nbsp;&nbsp;90 &deg;
+		-90 &deg; &nbsp;&nbsp;
+		<input id="headSlider" data-slider-id='headSlider' type="text" data-slider-min="-90" data-slider-max="90" data-slider-step="1" data-slider-value="0"/>
+		&nbsp;&nbsp;&nbsp;90 &deg;
 	</body>
 
 </html>
