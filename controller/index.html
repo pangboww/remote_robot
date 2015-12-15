@@ -32,14 +32,13 @@
 
 			// configure the publication and subscription feeds
 			sb.addPublish("up", "boolean", "false");
-  			sb.addPublish("down", "boolean", "false");
-  			sb.addPublish("left", "boolean", "false");
-  			sb.addPublish("right", "boolean", "false");
-  			sb.addPublish("laser", "boolean", "false");
-  			sb.addPublish("gun_left", "boolean", "false");
-  			sb.addPublish("gun_right", "boolean", "false");
-			sb.addPublish("head", "range", "0");
-			sb.addSubscribe("distance", "range");
+			sb.addPublish("down", "boolean", "false");
+			sb.addPublish("left", "boolean", "false");
+			sb.addPublish("right", "boolean", "false");
+			sb.addPublish("laser", "boolean", "false");
+			sb.addPublish("gun_left", "boolean", "false");
+			sb.addPublish("gun_right", "boolean", "false");
+
 
 			// override Spacebrew events - this is how you catch events coming from Spacebrew
 			//sb.onOpen = onOpen;
