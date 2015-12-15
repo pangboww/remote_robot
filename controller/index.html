@@ -36,10 +36,11 @@
   		sb.addPublish("left", "boolean", "false");
   		sb.addPublish("right", "boolean", "false");
 			sb.addPublish("head", "range", "0");
+			sb.addSubscribe("distance", "range");
 
 			// override Spacebrew events - this is how you catch events coming from Spacebrew
 			//sb.onOpen = onOpen;
-
+			sb.onRangeMessage = onRangeMessage;
 			// connect to spacbrew
 			sb.connect();
 
@@ -109,6 +110,10 @@
 		function onSliderChanged (evt){
 			sb.send("head", "range", r.getValue().toString());
 		}
+
+		function onRangeMessage(name, value){
+			$("#distance").text("Distance to the first obstacle: "+ value);
+		};
 		/**
 	     * Function that is called whenever the button is released.
 	     * @param  {Event object} evt Holds information about the button press event
@@ -153,10 +158,17 @@
 		<a class="button" id="left">Left</a>
 		<a class="button" id="right">Right</a>
 		<p>You can also type up, down, left, right on keyboard to send the same command</p>
+		<br>
+		<br>
 		<h1>Drag the slider to set robot head position</h1>
 		-90 &deg; &nbsp;&nbsp;
 		<input id="headSlider" data-slider-id='headSlider' type="text" data-slider-min="-90" data-slider-max="90" data-slider-step="1" data-slider-value="0"/>
 		&nbsp;&nbsp;&nbsp;90 &deg;
+		<br>
+		<br>
+
+		<p id='distance'>No robot connection</p>
+
 	</body>
 
 </html>
